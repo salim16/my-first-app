@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Server } from '../server/server.model';
 
 @Component({
   selector: 'app-servers',
@@ -14,11 +15,12 @@ import { Component, OnInit } from '@angular/core';
 export class ServersComponent implements OnInit {
 
   allowNewServer: boolean = false;
-  serverCreationStatus: string = 'No server was created!';
+  serverIdCounter: number = 0;
   serverName: string = '';
+  serverCreationStatus: string = 'No server was created!';
   userName: string = '';
   serverCreated: boolean = false;
-  servers: Array<String> = ['Testserver', 'Testserver 2'];
+  servers: Array<Server> = [];
   showSecret: boolean = false;
   // log: String[] = new Array();
   log: Date[] = Array();
@@ -38,7 +40,11 @@ export class ServersComponent implements OnInit {
 
   onCreateServer() {
     this.serverCreated = true;
-    this.servers.push(this.serverName);
+    // Initially setting the server status to offline, not of the actual Server component 
+    // but of the server object.
+    // The server status gets updated while actual Server component is created during
+    // iterating of for loop
+    this.servers.push(new Server(++this.serverIdCounter, this.serverName, 'offline'));
     this.serverCreationStatus = 'Server was created!, Name was: ' + this.serverName;
   }
 
